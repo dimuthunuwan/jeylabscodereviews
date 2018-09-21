@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontend", "Frontend\Frontend.csproj", "{CA73DEB8-892F-4CB5-B6DB-B112B3D4EFA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend\Backend.csproj", "{1D4579D7-52EE-417B-9E2A-2568F9F57C41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess\DataAccess.csproj", "{945A6845-A705-44FA-A479-B52587815FD4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JeylabTests", "UnitTest\JeylabTests\JeylabTests.csproj", "{E6D80549-0D25-49DD-8AA2-4F45D2BF55F2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA73DEB8-892F-4CB5-B6DB-B112B3D4EFA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA73DEB8-892F-4CB5-B6DB-B112B3D4EFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA73DEB8-892F-4CB5-B6DB-B112B3D4EFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA73DEB8-892F-4CB5-B6DB-B112B3D4EFA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D4579D7-52EE-417B-9E2A-2568F9F57C41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D4579D7-52EE-417B-9E2A-2568F9F57C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D4579D7-52EE-417B-9E2A-2568F9F57C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D4579D7-52EE-417B-9E2A-2568F9F57C41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{945A6845-A705-44FA-A479-B52587815FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{945A6845-A705-44FA-A479-B52587815FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{945A6845-A705-44FA-A479-B52587815FD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{945A6845-A705-44FA-A479-B52587815FD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6D80549-0D25-49DD-8AA2-4F45D2BF55F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6D80549-0D25-49DD-8AA2-4F45D2BF55F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6D80549-0D25-49DD-8AA2-4F45D2BF55F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6D80549-0D25-49DD-8AA2-4F45D2BF55F2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
