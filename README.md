@@ -37,7 +37,7 @@ Draw an isosceles triangle with a height of 200 and a width of 100
 
 Draw a scalene triangle with a side lengths of 250 and 100 and 250
 
-Draw a parallelogram with a side length of 250 and width of 100 and height of 250
+Draw a parallelogram with a side length of 250
 
 Draw an equilateral Triangle with a side length of 100
 
@@ -69,18 +69,3 @@ for scalene triangle
          and
 
     (Sidelength2 + Sidelength3) > Sidelength1
-
-
-for parallelogram
-------------------
-
-    (Sidelegth + Height) > Width
-
-         and
-
-    (Sidelegth + Width) > Height
-
-         and
-
-    (Height + Width) > Sidelegth
-
