@@ -1,4 +1,5 @@
-﻿using Backend.Interfaces;
+﻿using Backend.Enum;
+using Backend.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -16,6 +17,20 @@ namespace Backend.Classes
         public int height { get; set; }
         #endregion
 
+        #region Variables
+        int intCenterx;
+        int intCentery;
+        #endregion
+
+        #region Constructors
+        public clsPolygon()
+        {
+            intCenterx = (int)clsEnum.CenterXY.centerX;
+            intCentery = (int)clsEnum.CenterXY.centerY;
+
+        }
+        #endregion
+
         #region Methods
         /// <summary>
         /// method will draw octagon
@@ -27,40 +42,9 @@ namespace Backend.Classes
         {
             try
             {
-                //  Pointer array define
-                Point[] pnt = new Point[8];
-
-                int r = Convert.ToInt32(objOctagon.sidelength / (2 * Math.Sin(DegreeToRadian(360 / 16))));
-                //  Law of cosines:  c^{2}=a^{2}+b^{2}-2ab\cos(C);
-                int maxW = Convert.ToInt32(r * 2 * Math.Cos(DegreeToRadian(45 / 2)));
-                int minW = Convert.ToInt32(Math.Sqrt(2 * Math.Pow(r, 2)));
-                int extraW = Convert.ToInt32((Math.Sin(DegreeToRadian(45 / 2))) * objOctagon.sidelength);
-                //calculate each pointers x and y position
-                pnt[0].X = 50;
-                pnt[0].Y = 450 + r;
-
-                pnt[1].X = 50 + extraW;
-                pnt[1].Y = 450 + extraW;
-
-                pnt[2].X = 50 + r;
-                pnt[2].Y = 450;
-
-                pnt[3].X = 50 + 2 * r - extraW;
-                pnt[3].Y = 450 + extraW;
-
-                pnt[4].X = 50 + 2 * r;
-                pnt[4].Y = 450 + r;
-
-                pnt[5].X = 50 + 2 * r - extraW;
-                pnt[5].Y = 450 + 2 * r - extraW;
-
-                pnt[6].X = 50 + r;
-                pnt[6].Y = 450 + 2 * r;
-
-                pnt[7].X = 50 + extraW;
-                pnt[7].Y = 450 + 2 * r - extraW;
-
-                g.DrawPolygon(pen, pnt);
+                
+                PointF[] verticies = CalculateVertices(8, objOctagon.sidelength);
+                g.DrawPolygon(pen, verticies);
                 g.Dispose();//dispose object
             }
             catch (ArgumentNullException exanl)
@@ -112,25 +96,11 @@ namespace Backend.Classes
         {
             try
             {
-                
-                    //  Pointer array define
-                    Point[] pnt = new Point[4];
-                    int part = Convert.ToInt32(Math.Sqrt((Math.Pow(objParallelogram.sidelength, 2) - Math.Pow(objParallelogram.height, 2))));
-                //calculate each pointers x and y position
-                pnt[0].X = 450 + part;
-                    pnt[0].Y = 50;
 
-                    pnt[1].X = 450 + part + objParallelogram.width;
-                    pnt[1].Y = 50;
-
-                    pnt[2].X = 450 + objParallelogram.width;
-                    pnt[2].Y = 50 + objParallelogram.height;
-
-                    pnt[3].X = 450;
-                    pnt[3].Y = 50 + objParallelogram.height;
-
-                    g.DrawPolygon(pen, pnt);
-                    g.Dispose();//dispose object
+                //  Pointer array define
+                PointF[] verticies = CalculateVertices(4, objParallelogram.sidelength);
+                g.DrawPolygon(pen, verticies);
+                g.Dispose();//dispose object
 
 
             }
@@ -159,28 +129,8 @@ namespace Backend.Classes
             try
             {
                 //  Pointer array define
-                Point[] pnt = new Point[5];
-                int h = Convert.ToInt32(objPentagon.sidelength * Math.Sqrt(5 + 2 * Math.Sqrt(5)) / 2);
-                int w = Convert.ToInt32(objPentagon.sidelength * (1 + Math.Sqrt(5)) / 2);
-                int h2 = Convert.ToInt32(Math.Sqrt(Math.Pow(objPentagon.sidelength, 2) - Math.Pow(w / 2, 2)));
-                //calculate each pointers x and y position
-                pnt[0].X = 50;
-                pnt[0].Y = 450 + h2;
-
-                pnt[1].X = 50 + w / 2;
-                pnt[1].Y = 450;
-
-                pnt[2].X = 50 + w;
-                pnt[2].Y = 450 + h2;
-
-                pnt[3].X = 50 + w - (w - objPentagon.sidelength) / 2;
-                pnt[3].Y = 450 + h;
-
-                pnt[4].X = 50 + (w - objPentagon.sidelength) / 2;
-                pnt[4].Y = 450 + h;
-
-
-                g.DrawPolygon(pen, pnt);
+                PointF[] verticies = CalculateVertices(5, objPentagon.sidelength);
+                g.DrawPolygon(pen, verticies);
                 g.Dispose();//dispose object
             }
             catch (ArgumentNullException exanl)
@@ -197,6 +147,44 @@ namespace Backend.Classes
             }
         }
 
+        private PointF[] CalculateVertices(int sides, int radius)
+        {
+            if (sides < 3)
+                throw new ArgumentException("Polygon must have 3 sides or more.");
+
+            Point center = new Point();
+            center.X = intCenterx;
+            center.Y = intCentery;
+
+            int startingAngle = 90;
+
+            List<PointF> points = new List<PointF>();
+            float step = 360.0f / sides;
+
+            float angle = startingAngle; //starting angle
+            for (double i = startingAngle; i < startingAngle + 360.0; i += step) //go in a full circle
+            {
+                points.Add(DegreesToXY(angle, radius, center)); //code snippet from above
+                angle += step;
+            }
+
+            return points.ToArray();
+        }
+
+        /// <summary>
+        /// Calculates a point that is at an angle from the origin (0 is to the right)
+        /// </summary>
+        private PointF DegreesToXY(float degrees, float radius, Point origin)
+        {
+            PointF xy = new PointF();
+            double radians = degrees * Math.PI / 180.0;
+
+            xy.X = (float)Math.Cos(radians) * radius + origin.X;
+            xy.Y = (float)Math.Sin(-radians) * radius + origin.Y;
+
+            return xy;
+        }
+
         /// <summary>
         /// method will draw hexagon
         /// </summary>
@@ -208,29 +196,8 @@ namespace Backend.Classes
             try
             {
                 //  Pointer array define
-                Point[] pnt = new Point[6];
-                int h = Convert.ToInt32(Math.Sqrt(3) * objHexagon.sidelength);
-                int w = 2 * objHexagon.sidelength;
-                //calculate each pointers x and y position
-                pnt[0].X = 50;
-                pnt[0].Y = 450 + h / 2;
-
-                pnt[1].X = 50 + objHexagon.sidelength / 2;
-                pnt[1].Y = 450;
-
-                pnt[2].X = Convert.ToInt32(50 + (objHexagon.sidelength * 1.5));
-                pnt[2].Y = 450;
-
-                pnt[3].X = 50 + w;
-                pnt[3].Y = 450 + h / 2;
-
-                pnt[4].X = Convert.ToInt32(50 + (objHexagon.sidelength * 1.5));
-                pnt[4].Y = 450 + h;
-
-                pnt[5].X = 50 + objHexagon.sidelength / 2;
-                pnt[5].Y = 450 + h;
-
-                g.DrawPolygon(pen, pnt);
+                PointF[] verticies = CalculateVertices(6, objHexagon.sidelength);
+                g.DrawPolygon(pen, verticies);
                 g.Dispose();//dispose object
             }
             catch (ArgumentNullException exanl)
@@ -258,42 +225,8 @@ namespace Backend.Classes
             try
             {
                 //  Pointer array define
-                Point[] pnt = new Point[7];
-
-                int r = Convert.ToInt32(objHeptagon.sidelength / (2 * Math.Sin(DegreeToRadian(360 / 14))));
-                int h = Convert.ToInt32(Math.Sqrt(Math.Pow(r, 2) - Math.Pow(objHeptagon.sidelength / 2, 2)));
-                //  Law of cosines:  c^{2}=a^{2}+b^{2}-2ab\cos(C);
-                int maxW = Convert.ToInt32(Math.Sqrt(Math.Pow(r, 2) * (2 - 2 * Math.Cos(DegreeToRadian(1080 / 7)))));
-                int minW = Convert.ToInt32(Math.Sqrt(Math.Pow(r, 2) * (2 - 2 * Math.Cos(DegreeToRadian(720 / 7)))));
-                int extraW = Convert.ToInt32(objHeptagon.sidelength * Math.Cos(DegreeToRadian(180 - 900 / 7)));
-
-                //  Mid Height and Min Height
-                int h2 = Convert.ToInt32((Math.Pow(r, 2) / minW) * Math.Sin(DegreeToRadian(720 / 7)));
-                int h3 = Convert.ToInt32((Math.Pow(r, 2) / maxW) * Math.Sin(DegreeToRadian(1080 / 7)));
-
-                //calculate each pointers x and y position
-                pnt[0].X = 50;
-                pnt[0].Y = 450 + r + h3;
-
-                pnt[1].X = 50 + (maxW - minW) / 2;
-                pnt[1].Y = 450 + r - h2;
-
-                pnt[2].X = 50 + maxW / 2;
-                pnt[2].Y = 450;
-
-                pnt[3].X = 50 + maxW - (maxW - minW) / 2;
-                pnt[3].Y = 450 + r - h2;
-
-                pnt[4].X = 50 + maxW;
-                pnt[4].Y = 450 + r + h3;
-
-                pnt[5].X = 50 + objHeptagon.sidelength + extraW;
-                pnt[5].Y = 450 + r + h;
-
-                pnt[6].X = 50 + extraW;
-                pnt[6].Y = 450 + r + h;
-
-                g.DrawPolygon(pen, pnt);
+                PointF[] verticies = CalculateVertices(7, objHeptagon.sidelength);
+                g.DrawPolygon(pen, verticies);
                 g.Dispose();//dispose object
             }
             catch (ArgumentNullException exanl)

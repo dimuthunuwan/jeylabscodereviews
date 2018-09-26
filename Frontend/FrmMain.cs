@@ -152,7 +152,7 @@ namespace Frontend
                     {
                         case "circle":/** if circle **/
                             float cleRadius;
-                            if (float.TryParse(arrstr[7], out cleRadius))/** validate input circle radius is float value**/
+                            if (float.TryParse(arrstr[7], out cleRadius) && cleRadius > 0)/** validate input circle radius is float value**/
                             {
                                 /** Re-correct and rewrite input string**/
                                 arrstr[0] = "Draw";
@@ -173,7 +173,7 @@ namespace Frontend
                             break;
                         case "square":/** if square**/
                             int sqsdlength;
-                            if (int.TryParse(arrstr[8], out sqsdlength))/** validate input square side length is int value**/
+                            if (int.TryParse(arrstr[8], out sqsdlength) && sqsdlength > 0)/** validate input square side length is int value**/
                             {
                                 /** Re-correct and rewrite input string**/
                                 arrstr[0] = "Draw";
@@ -196,7 +196,7 @@ namespace Frontend
                         case "rectangle":/** if rectangle**/
                             int recWidth;
                             int recHeight;
-                            if (int.TryParse(arrstr[7], out recWidth) && int.TryParse(arrstr[12], out recHeight))/** validate input rectangle width and height are int value**/
+                            if (int.TryParse(arrstr[7], out recWidth) && int.TryParse(arrstr[12], out recHeight) && recWidth > 0 && recHeight >0)/** validate input rectangle width and height are int value**/
                             {
                                 /** Re-correct and rewrite input string**/
                                 arrstr[0] = "Draw";
@@ -231,7 +231,7 @@ namespace Frontend
                             break;
                         case "octagon":/** if octagon**/
                             int octlen;
-                            if (int.TryParse(arrstr[8], out octlen))/** validate input octagon side length is int value**/
+                            if (int.TryParse(arrstr[8], out octlen) && octlen > 0)/** validate input octagon side length is int value**/
                             {
                                 /** Re-correct and rewrite input string**/
                                 arrstr[0] = "Draw";
@@ -254,7 +254,7 @@ namespace Frontend
                         case "isosceles":// if isosceles triangle
                             int itwidth;
                             int itheight;
-                            if (int.TryParse(arrstr[8], out itheight) && int.TryParse(arrstr[13], out itwidth))/** validate input isosceles triangle width and height are int value**/
+                            if (int.TryParse(arrstr[8], out itheight) && int.TryParse(arrstr[13], out itwidth) && itwidth > 0 && itheight > 0)/** validate input isosceles triangle width and height are int value**/
                             {
                                 /** Re-correct and rewrite input string**/
                                 arrstr[0] = "Draw";
@@ -330,18 +330,13 @@ namespace Frontend
                             }
                             break;
                         //Assumption - the string on this format
-                        //Draw a parallelogram with a side length of 250 and width of 100 and height of 250
+                        //Draw a parallelogram with a side length of 250
                         case "parallelogram":// if parallelogram
                             int prSidelegth;
-                            int prWidth;
-                            int prHeight;
-                            /** validate input parallelogram side length,width,height  are int value**/
-                            if (int.TryParse(arrstr[8], out prSidelegth) && int.TryParse(arrstr[12], out prWidth) && int.TryParse(arrstr[16], out prHeight))
+                            /** validate input parallelogram side length is int value**/
+                            if (int.TryParse(arrstr[8], out prSidelegth) && prSidelegth > 0)
                             {
-                                /** validate input parallelogram side length,width,height  are greater than zero and compatible**/
-                                if (prSidelegth != 0 && prWidth != 0 && prHeight != 0 && ((prSidelegth + prHeight) > prWidth) &&
-                                    ((prSidelegth + prWidth) > prHeight) && ((prHeight + prWidth) > prSidelegth))
-                                {
+                                
                                     /** Re-correct and rewrite input string**/
                                     arrstr[0] = "Draw";
                                     arrstr[1] = "a";
@@ -351,22 +346,11 @@ namespace Frontend
                                     arrstr[5] = "side";
                                     arrstr[6] = "length";
                                     arrstr[7] = "of";
-                                    arrstr[9] = "and";
-                                    arrstr[10] = "width";
-                                    arrstr[11] = "of";
-                                    arrstr[13] = "and";
-                                    arrstr[14] = "height";
-                                    arrstr[15] = "of";
                                     StrOutPutMsg = MergeString(arrstr);/** convert string array to string**/
                                     blnIsSduccess = true;  
-                                }
-                                else/** if input parallelogram side length,width,height are not greater than zero and compatible, display error message**/
-                                {
-                                    StrOutPutMsg = "Invalid input parameter/s.please refer the expected string format.";
-                                    blnIsSduccess = false;
-                                }
+                                
                             }
-                            else/** if input parallelogram side length,width,height are not int, display error message**/
+                            else/** if input parallelogram side length is not int or less than or equal to zero, display error message**/
                             {
                                 StrOutPutMsg = "Invalid input parameter/s.please refer the expected string format.";
                                 blnIsSduccess = false;
@@ -377,7 +361,7 @@ namespace Frontend
                         //Draw an equilateral Triangle with a side length of 100
                         case "equilateral":// if Equilateral Triangle
                             int eqtSidelegth;
-                            if (int.TryParse(arrstr[9], out eqtSidelegth))/** validate input Equilateral Triangle side length is int value**/
+                            if (int.TryParse(arrstr[9], out eqtSidelegth) && eqtSidelegth > 0)/** validate input Equilateral Triangle side length is int value**/
                             {
                                 /** Re-correct and rewrite input string**/
                                 arrstr[0] = "Draw";
@@ -401,7 +385,7 @@ namespace Frontend
                         //Draw a pentagon with a side length of 100
                         case "pentagon":// if pentagon
                             int ptSidelegth;
-                            if (int.TryParse(arrstr[8], out ptSidelegth))/** validate input pentagon side length is int value**/
+                            if (int.TryParse(arrstr[8], out ptSidelegth) && ptSidelegth > 0)/** validate input pentagon side length is int value**/
                             {
                                 /** Re-correct and rewrite input string**/
                                 arrstr[0] = "Draw";
@@ -425,7 +409,7 @@ namespace Frontend
                         //Draw a hexagon with a side length of 100
                         case "hexagon":// if hexagon
                             int hxnSideLength;
-                            if (int.TryParse(arrstr[8], out hxnSideLength))/** validate input hexagon side length is int value**/
+                            if (int.TryParse(arrstr[8], out hxnSideLength) && hxnSideLength > 0)/** validate input hexagon side length is int value**/
                             {
                                 /** Re-correct and rewrite input string**/
                                 arrstr[0] = "Draw";
@@ -448,7 +432,7 @@ namespace Frontend
                         //Draw a heptagon with a side length of 100
                         case "heptagon":// if heptagon
                             int hpnSideLength;
-                            if (int.TryParse(arrstr[8], out hpnSideLength))/** validate input heptagon side length is int value**/
+                            if (int.TryParse(arrstr[8], out hpnSideLength) && hpnSideLength > 0)/** validate input heptagon side length is int value**/
                             {
                                 /** Re-correct and rewrite input string**/
                                 arrstr[0] = "Draw";
@@ -472,7 +456,7 @@ namespace Frontend
                         case "oval":// if oval
                             int ovwidth;
                             int ovheight;
-                            if (int.TryParse(arrstr[7], out ovwidth) && int.TryParse(arrstr[12], out ovheight))/** validate input oval width and height are int value**/
+                            if (int.TryParse(arrstr[7], out ovwidth) && int.TryParse(arrstr[12], out ovheight) && ovwidth > 0 && ovheight > 0)/** validate input oval width and height are int value**/
                             {
                                 /** Re-correct and rewrite input string**/
                                 arrstr[0] = "Draw";
@@ -645,18 +629,14 @@ namespace Frontend
                             break;
 
                         //Assumption - the string on this format
-                        //Draw a parallelogram with a side length of 250 and width of 100 and height of 250
+                        //Draw a parallelogram with a side length of 250
                         case "parallelogram":/** if parallelogram **/
                             int parsidelength;
-                            int parwidth;
-                            int parheight;
 
                             if (int.TryParse(arrstr[8], out parsidelength)) { }
-                            if (int.TryParse(arrstr[12], out parwidth)) { }
-                            if (int.TryParse(arrstr[16], out parheight)) { }
 
-                            if (parsidelength > 0 && parwidth > 0 && parheight > 0)
-                                DrawParallelogram(parsidelength, parwidth, parheight);
+                            if (parsidelength > 0)
+                                DrawParallelogram(parsidelength);
                             break;
 
                         //Assumption - the string on this format
@@ -943,7 +923,7 @@ namespace Frontend
         /// <param name="sidelength"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        private void DrawParallelogram(int sidelength, int width, int height)
+        private void DrawParallelogram(int sidelength)
         {
             try
             {
@@ -951,8 +931,6 @@ namespace Frontend
                 ifOctagon = new clsPolygon();
                 clsPolygon objParallelogram = new clsPolygon();//crate polygon object and fill value to property
                 objParallelogram.sidelength = sidelength;
-                objParallelogram.width = width;
-                objParallelogram.height = height;
 
                 ifOctagon.DrawParallelogram(gP, p, objParallelogram);
             }

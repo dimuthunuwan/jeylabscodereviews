@@ -16,6 +16,8 @@ namespace Backend.Classes
         public float Radius { get; set; }
         public int width { get; set; }
         public int height { get; set; }
+
+        public List<string> Languages { get; set; }
         #endregion
 
         #region Variables
@@ -29,6 +31,7 @@ namespace Backend.Classes
         {
             intCenterx = (int)clsEnum.CenterXY.centerX;
             intCentery = (int)clsEnum.CenterXY.centerY;
+            
         }
         #endregion
 
