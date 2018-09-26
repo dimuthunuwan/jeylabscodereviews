@@ -43,7 +43,7 @@ Draw an equilateral Triangle with a side length of 100
 
 Draw an oval with a width of 100 and a height of 50
 
-Draw an octagon with a side length of 200
+Draw an octagon with a side length of 100
 
 Draw a pentagon with a side length of 100
 
