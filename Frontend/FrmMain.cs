@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Backend.Interfaces;
+using Backend.Enum;
 
 namespace Frontend
 {
@@ -21,7 +22,7 @@ namespace Frontend
         iCircle ifCircle;
         iSquare ifSquare;
         iTriangle ifTriangle;
-        iPolygon ifOctagon; 
+        iPolygon ifPolygon; 
         #endregion
 
         #region Default constructor
@@ -80,6 +81,7 @@ namespace Frontend
                             DrawShape(strErrMsg);
 
                             btnDraw.Text = "Reset";
+                            lblErrMsg.Text = "";
                         }
                         else/** if validation fail display the error message**/
                         {
@@ -596,7 +598,7 @@ namespace Frontend
                         case "octagon":/** if octagon **/
                             int octlength;
                             if (int.TryParse(arrstr[8], out octlength)) { }
-                            DrawOctagon(octlength);
+                            DrawPolygon((int)clsEnum.NumberOfSidePerPolygon.octagon, octlength);
                             break;
                         case "isosceles"://if isosceles triangle
                             if (strInputVal.Contains("triangle"))
@@ -636,7 +638,7 @@ namespace Frontend
                             if (int.TryParse(arrstr[8], out parsidelength)) { }
 
                             if (parsidelength > 0)
-                                DrawParallelogram(parsidelength);
+                                DrawPolygon((int)clsEnum.NumberOfSidePerPolygon.parallelogram, parsidelength);
                             break;
 
                         //Assumption - the string on this format
@@ -659,7 +661,7 @@ namespace Frontend
                             if (int.TryParse(arrstr[8], out pensidelength)) { }
 
                             if (pensidelength > 0)
-                                DrawPentagon(pensidelength);
+                                DrawPolygon((int)clsEnum.NumberOfSidePerPolygon.pentagon, pensidelength);
                             break;
 
                         //Assumption - the string on this format
@@ -670,7 +672,7 @@ namespace Frontend
                             if (int.TryParse(arrstr[8], out hexsidelength)) { }
 
                             if (hexsidelength > 0)
-                                DrawHexagon(hexsidelength);
+                                DrawPolygon((int)clsEnum.NumberOfSidePerPolygon.hexagon, hexsidelength);
                             break;
 
                         //Assumption - the string on this format
@@ -681,7 +683,7 @@ namespace Frontend
                             if (int.TryParse(arrstr[8], out hepsidelength)) { }
 
                             if (hepsidelength > 0)
-                                DrawHeptagon(hepsidelength);
+                                DrawPolygon((int)clsEnum.NumberOfSidePerPolygon.heptagon, hepsidelength);
                             break;
 
                         //Assumption - the string on this format
@@ -817,20 +819,27 @@ namespace Frontend
                 lblErrMsg.Visible = true;
             }
         }
+        
+
         /// <summary>
-        /// method will draw octagon by side length
+        /// method will draw polygons including parallelogram,pentagon,hexagon,heptagon,octagon
         /// </summary>
+        /// <param name="NumOfSides"></param>
         /// <param name="sidelength"></param>
-        private void DrawOctagon(int sidelength)
+        private void DrawPolygon(int NumOfSides,int sidelength)
         {
             try
             {
-                Graphics gP = this.pnlCanvas.CreateGraphics();
-                ifOctagon = new clsPolygon();
-                clsPolygon objOctagon = new clsPolygon();//crate polygon object and fill value to property
-                objOctagon.sidelength = sidelength;
+                if (NumOfSides < 3)
+                    throw new ArgumentException("Polygon must have 3 sides or more.");
 
-                ifOctagon.DrawOctagon(gP, p, objOctagon);
+                Graphics gP = this.pnlCanvas.CreateGraphics();
+                ifPolygon = new clsPolygon();
+                clsPolygon objPolygon = new clsPolygon();//crate polygon object and fill value to property
+                objPolygon.sidelength = sidelength;
+                objPolygon.NumOFsides = NumOfSides;
+
+                ifPolygon.DrawPolygon(gP, p, objPolygon);
             }
             catch (ArgumentNullException exanl)
             {
@@ -842,12 +851,18 @@ namespace Frontend
                 lblErrMsg.Text = "Application error occured";
                 lblErrMsg.Visible = true;
             }
+            catch (ArgumentException argex)
+            {
+                lblErrMsg.Text = "Application error occured";
+                lblErrMsg.Visible = true;
+            }
             catch (Exception ex)
             {
                 lblErrMsg.Text = "Application error occured";
                 lblErrMsg.Visible = true;
             }
         }
+
         /// <summary>
         /// method will draw isosceles triangle by width and height
         /// </summary>
@@ -917,39 +932,7 @@ namespace Frontend
                 lblErrMsg.Visible = true;
             }
         }
-        /// <summary>
-        /// method will draw parallelogram by side length,width,height
-        /// </summary>
-        /// <param name="sidelength"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        private void DrawParallelogram(int sidelength)
-        {
-            try
-            {
-                Graphics gP = this.pnlCanvas.CreateGraphics();
-                ifOctagon = new clsPolygon();
-                clsPolygon objParallelogram = new clsPolygon();//crate polygon object and fill value to property
-                objParallelogram.sidelength = sidelength;
-
-                ifOctagon.DrawParallelogram(gP, p, objParallelogram);
-            }
-            catch (ArgumentNullException exanl)
-            {
-                lblErrMsg.Text = "Application error occured";
-                lblErrMsg.Visible = true;
-            }
-            catch (NullReferenceException exnr)
-            {
-                lblErrMsg.Text = "Application error occured";
-                lblErrMsg.Visible = true;
-            }
-            catch (Exception ex)
-            {
-                lblErrMsg.Text = "Application error occured";
-                lblErrMsg.Visible = true;
-            }
-        }
+        
         /// <summary>
         /// method will draw equilateral triangle by side length
         /// </summary>
@@ -982,101 +965,7 @@ namespace Frontend
                 lblErrMsg.Visible = true;
             }
         }
-        /// <summary>
-        /// method will draw pentagon by side length
-        /// </summary>
-        /// <param name="sidelength"></param>
-        private void DrawPentagon(int sidelength)
-        {
-            try
-            {
-                Graphics gP = this.pnlCanvas.CreateGraphics();
-                ifOctagon = new clsPolygon();
-                clsPolygon objPentagon = new clsPolygon();//crate polygon object and fill value to property
-                objPentagon.sidelength = sidelength;
-
-                ifOctagon.DrawPentagon(gP, p, objPentagon);
-                
-            }
-            catch (ArgumentNullException exanl)
-            {
-                lblErrMsg.Text = "Application error occured";
-                lblErrMsg.Visible = true;
-            }
-            catch (NullReferenceException exnr)
-            {
-                lblErrMsg.Text = "Application error occured";
-                lblErrMsg.Visible = true;
-            }
-            catch (Exception ex)
-            {
-                lblErrMsg.Text = "Application error occured";
-                lblErrMsg.Visible = true;
-            }
-        }
-        /// <summary>
-        /// method will draw hexagon by side length
-        /// </summary>
-        /// <param name="sidelength"></param>
-        private void DrawHexagon(int sidelength)
-        {
-            try
-            {
-                Graphics gP = this.pnlCanvas.CreateGraphics();
-                ifOctagon = new clsPolygon();
-                clsPolygon objHexagon = new clsPolygon();//crate polygon object and fill value to property
-                objHexagon.sidelength = sidelength;
-
-                ifOctagon.Drawhexagon(gP, p, objHexagon);
-            }
-            catch (ArgumentNullException exanl)
-            {
-                lblErrMsg.Text = "Application error occured";
-                lblErrMsg.Visible = true;
-            }
-            catch (NullReferenceException exnr)
-            {
-                lblErrMsg.Text = "Application error occured";
-                lblErrMsg.Visible = true;
-            }
-            catch (Exception ex)
-            {
-                lblErrMsg.Text = "Application error occured";
-                lblErrMsg.Visible = true;
-            }
-        }
-        /// <summary>
-        /// method will draw heptagon
-        /// </summary>
-        /// <param name="sidelength"></param>
-        private void DrawHeptagon(int sidelength)
-        {
-            try
-            {
-                Graphics gP = this.pnlCanvas.CreateGraphics();
-
-                ifOctagon = new clsPolygon();
-                clsPolygon objHeptagon = new clsPolygon();//crate polygon object and fill value to property
-                objHeptagon.sidelength = sidelength;
-
-                ifOctagon.Drawheptagon(gP, p, objHeptagon);
-            }
-            catch (ArgumentNullException exanl)
-            {
-                lblErrMsg.Text = "Application error occured";
-                lblErrMsg.Visible = true;
-            }
-            catch (NullReferenceException exnr)
-            {
-                lblErrMsg.Text = "Application error occured";
-                lblErrMsg.Visible = true;
-            }
-            catch (Exception ex)
-            {
-                lblErrMsg.Text = "Application error occured";
-                lblErrMsg.Visible = true;
-            }
-        }
+        
         /// <summary>
         /// method will draw oval by width and height
         /// </summary>

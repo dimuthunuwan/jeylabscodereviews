@@ -13,8 +13,8 @@ namespace Backend.Classes
     {
         #region Properties
         public int sidelength { get; set; }
-        public int width { get; set; }
-        public int height { get; set; }
+        
+        public int NumOFsides { get; set; }
         #endregion
 
         #region Variables
@@ -32,20 +32,64 @@ namespace Backend.Classes
         #endregion
 
         #region Methods
+        
         /// <summary>
-        /// method will draw octagon
+        /// method will draw polygons including parallelogram,pentagon,hexagon,heptagon,octagon
         /// </summary>
         /// <param name="g"></param>
         /// <param name="pen"></param>
         /// <param name="objOctagon"></param>
-        public void DrawOctagon(Graphics g, Pen pen, clsPolygon objOctagon)
+        /// <param name="sides"></param>
+        public void DrawPolygon(Graphics g, Pen pen, clsPolygon objOctagon)
         {
+            try
+            {
+                PointF[] verticies = CalculateVertices(objOctagon.NumOFsides, objOctagon.sidelength);
+                g.DrawPolygon(pen, verticies);
+                g.Dispose();//dispose object
+            }
+            catch (ArgumentNullException exanl)
+            {
+                throw exanl;
+            }
+            catch (NullReferenceException exnr)
+            {
+                throw exnr;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        /// <summary>
+        /// method will calculate vertices for each polygon shape
+        /// </summary>
+        /// <param name="sides"></param>
+        /// <param name="radius"></param>
+        /// <returns></returns>
+        private PointF[] CalculateVertices(int sides, int radius)
+        {
+            List<PointF> points = new List<PointF>();
             try
             {
                 
-                PointF[] verticies = CalculateVertices(8, objOctagon.sidelength);
-                g.DrawPolygon(pen, verticies);
-                g.Dispose();//dispose object
+                Point center = new Point();
+                center.X = intCenterx;
+                center.Y = intCentery;
+
+                int startingAngle = (int)clsEnum.startingAngle.intstartingAngle;
+
+                
+                float step = 360.0f / sides;
+
+                float angle = startingAngle; //starting angle
+                for (double i = startingAngle; i < startingAngle + 360.0; i += step) //go in a full circle
+                {
+                    points.Add(DegreesToXY(angle, radius, center)); //code snippet from above
+                    angle += step;
+                }
             }
             catch (ArgumentNullException exanl)
             {
@@ -55,117 +99,13 @@ namespace Backend.Classes
             {
                 throw exnr;
             }
-            catch (Exception ex)
+            catch (ArgumentException argex)
             {
-                throw ex;
-            }
-        }
-        /// <summary>
-        /// method will calculate degree to radian
-        /// </summary>
-        /// <param name="angle"></param>
-        /// <returns></returns>
-        private static double DegreeToRadian(double angle)
-        {
-            try
-            {
-                return Math.PI * angle / 180.0;
-            }
-            catch (MissingMemberException mmex)
-            {
-                throw mmex;
-            }
-            catch (MemberAccessException maex)
-            {
-                throw maex;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// method will draw parallelogram
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="pen"></param>
-        /// <param name="objParallelogram"></param>
-        public void DrawParallelogram(Graphics g, Pen pen, clsPolygon objParallelogram)
-        {
-            try
-            {
-
-                //  Pointer array define
-                PointF[] verticies = CalculateVertices(4, objParallelogram.sidelength);
-                g.DrawPolygon(pen, verticies);
-                g.Dispose();//dispose object
-
-
-            }
-            catch (ArgumentNullException exanl)
-            {
-                throw exanl;
-            }
-            catch (NullReferenceException exnr)
-            {
-                throw exnr;
+                throw argex;
             }
             catch (Exception ex)
             {
                 throw ex;
-            }
-        }
-
-        /// <summary>
-        /// method will draw pentagon
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="pen"></param>
-        /// <param name="objPentagon"></param>
-        public void DrawPentagon(Graphics g, Pen pen, clsPolygon objPentagon)
-        {
-            try
-            {
-                //  Pointer array define
-                PointF[] verticies = CalculateVertices(5, objPentagon.sidelength);
-                g.DrawPolygon(pen, verticies);
-                g.Dispose();//dispose object
-            }
-            catch (ArgumentNullException exanl)
-            {
-                throw exanl;
-            }
-            catch (NullReferenceException exnr)
-            {
-                throw exnr;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        private PointF[] CalculateVertices(int sides, int radius)
-        {
-            if (sides < 3)
-                throw new ArgumentException("Polygon must have 3 sides or more.");
-
-            Point center = new Point();
-            center.X = intCenterx;
-            center.Y = intCentery;
-
-            int startingAngle = 90;
-
-            List<PointF> points = new List<PointF>();
-            float step = 360.0f / sides;
-
-            float angle = startingAngle; //starting angle
-            for (double i = startingAngle; i < startingAngle + 360.0; i += step) //go in a full circle
-            {
-                points.Add(DegreesToXY(angle, radius, center)); //code snippet from above
-                angle += step;
             }
 
             return points.ToArray();
@@ -176,29 +116,15 @@ namespace Backend.Classes
         /// </summary>
         private PointF DegreesToXY(float degrees, float radius, Point origin)
         {
-            PointF xy = new PointF();
-            double radians = degrees * Math.PI / 180.0;
-
-            xy.X = (float)Math.Cos(radians) * radius + origin.X;
-            xy.Y = (float)Math.Sin(-radians) * radius + origin.Y;
-
-            return xy;
-        }
-
-        /// <summary>
-        /// method will draw hexagon
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="pen"></param>
-        /// <param name="objHexagon"></param>
-        public void Drawhexagon(Graphics g, Pen pen, clsPolygon objHexagon)
-        {
             try
             {
-                //  Pointer array define
-                PointF[] verticies = CalculateVertices(6, objHexagon.sidelength);
-                g.DrawPolygon(pen, verticies);
-                g.Dispose();//dispose object
+                PointF xy = new PointF();
+                double radians = degrees * Math.PI / 180.0;
+
+                xy.X = (float)Math.Cos(radians) * radius + origin.X;
+                xy.Y = (float)Math.Sin(-radians) * radius + origin.Y;
+
+                return xy;
             }
             catch (ArgumentNullException exanl)
             {
@@ -208,40 +134,17 @@ namespace Backend.Classes
             {
                 throw exnr;
             }
+            catch (ArgumentException argex)
+            {
+                throw argex;
+            }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
 
-        /// <summary>
-        /// method will draw heptagon
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="pen"></param>
-        /// <param name="objHeptagon"></param>
-        public void Drawheptagon(Graphics g, Pen pen, clsPolygon objHeptagon)
-        {
-            try
-            {
-                //  Pointer array define
-                PointF[] verticies = CalculateVertices(7, objHeptagon.sidelength);
-                g.DrawPolygon(pen, verticies);
-                g.Dispose();//dispose object
-            }
-            catch (ArgumentNullException exanl)
-            {
-                throw exanl;
-            }
-            catch (NullReferenceException exnr)
-            {
-                throw exnr;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        } 
+        
         #endregion
     }
 }
