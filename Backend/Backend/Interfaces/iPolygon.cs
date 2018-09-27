@@ -12,7 +12,7 @@ namespace Backend.Interfaces
     {
         #region Method signatures
 
-        void DrawPolygon(Graphics g, Pen pen, clsPolygon objOctagon);
+        void DrawPolygon(Graphics g, Pen pen, clsPolygon objPolygon);
         
         #endregion
     }

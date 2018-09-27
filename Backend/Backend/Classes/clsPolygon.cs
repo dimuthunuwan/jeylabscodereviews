@@ -38,13 +38,13 @@ namespace Backend.Classes
         /// </summary>
         /// <param name="g"></param>
         /// <param name="pen"></param>
-        /// <param name="objOctagon"></param>
+        /// <param name="objPolygon"></param>
         /// <param name="sides"></param>
-        public void DrawPolygon(Graphics g, Pen pen, clsPolygon objOctagon)
+        public void DrawPolygon(Graphics g, Pen pen, clsPolygon objPolygon)
         {
             try
             {
-                PointF[] verticies = CalculateVertices(objOctagon.NumOFsides, objOctagon.sidelength);
+                PointF[] verticies = CalculateVertices(objPolygon.NumOFsides, objPolygon.sidelength);
                 g.DrawPolygon(pen, verticies);
                 g.Dispose();//dispose object
             }
