@@ -17,10 +17,14 @@ namespace JeylabTests
         {
             Panel pnlCanvas = new System.Windows.Forms.Panel();
             clsCircle objCircle = new clsCircle();
-            //Graphics gP = pnlCanvas.CreateGraphics();
-            //Pen p = new Pen(Color.Red, 5);
-            //objCircle.DrawCircle(gP,p,objCircle);
-            
+            objCircle.Radius = 100;
+            Graphics gP = pnlCanvas.CreateGraphics();
+            Pen p = new Pen(Color.Red, 5);
+            objCircle.DrawCircle(gP,p,objCircle);
+
+            //Assert.Fail();
+            //Assert.AreEqual(expected, actual);
+
         }
 
         [TestMethod]
@@ -28,9 +32,14 @@ namespace JeylabTests
         {
             Panel pnlCanvas = new System.Windows.Forms.Panel();
             clsCircle objCircle = new clsCircle();
-            //Graphics gP = pnlCanvas.CreateGraphics();
-            //Pen p = new Pen(Color.Red, 5);
-            //objCircle.DrawOval(gP, p, objCircle);
+            objCircle.width = 100;
+            objCircle.height = 50;
+            Graphics gP = pnlCanvas.CreateGraphics();
+            Pen p = new Pen(Color.Red, 5);
+            objCircle.DrawOval(gP, p, objCircle);
+
+            //Assert.Fail();
+            //Assert.AreEqual(expected, actual);
 
         }
     }

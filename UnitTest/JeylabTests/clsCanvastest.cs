@@ -10,13 +10,17 @@ namespace JeylabTests
     [TestClass]
     public class clsCanvastest
     {
+        
         [TestMethod]
         public void ClearCanvas()
         {
             Panel pnlCanvas = new System.Windows.Forms.Panel();
             clsCanvas objCanvas = new clsCanvas();
-            //Graphics gP = pnlCanvas.CreateGraphics(); ;
-            //objCanvas.ClearCanvas(gP);
+            Graphics gP = pnlCanvas.CreateGraphics(); ;
+            objCanvas.ClearCanvas(gP);
+
+            //Assert.Fail();
+            //Assert.AreEqual(expected, actual);
         }
     }
 }
